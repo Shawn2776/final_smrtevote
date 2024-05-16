@@ -8,7 +8,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold">Welcome to SMRTeVote</h1>
 
         <LoginButton>
-          <Button size="lg">Get started</Button>
+          <Button size="lg">Get Started</Button>
         </LoginButton>
       </div>
     </main>
