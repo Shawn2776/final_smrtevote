@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 import CardWrapper from "./card-wrapper";
 import { newVerification } from "@/actions/new-verification";
@@ -9,7 +9,24 @@ import { useSearchParams } from "next/navigation";
 import { FormSuccess } from "../form-success";
 import { FormError } from "../form-error";
 
+const SearchParamsWrapper = ({ children }) => {
+  const searchParams = useSearchParams();
+  return children(searchParams);
+};
+
 const NewVerificationForm = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchParamsWrapper>
+        {(searchParams) => (
+          <NewVerificationFormContent searchParams={searchParams} />
+        )}
+      </SearchParamsWrapper>
+    </Suspense>
+  );
+};
+
+const NewVerificationFormContent = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
