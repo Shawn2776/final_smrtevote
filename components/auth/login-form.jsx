@@ -1,9 +1,9 @@
 "use client";
 
 import * as z from "zod";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useTransition, Suspense } from "react";
 
 import { LoginSchema } from "@/schemas";
 import {
@@ -14,24 +14,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import CardWrapper from "@/components/auth/card-wrapper";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
-import { useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
+import useCustomSearchParams from "@/hooks/useCustomSearchParams";
 
 const LoginForm = () => {
-  const searchParams = useSearchParams();
-  const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with different provider"
-      : "";
-
-  const [error, setError] = useState("");
+  const urlError = useCustomSearchParams();
+  const [error, setError] = useState(urlError);
   const [success, setSuccess] = useState("");
 
   const [isPending, startTransition] = useTransition();
@@ -57,6 +50,7 @@ const LoginForm = () => {
       });
     });
   };
+
   return (
     <CardWrapper
       headerLabel={"Welcome Back!"}
@@ -102,7 +96,7 @@ const LoginForm = () => {
             />
           </div>
 
-          <FormError message={error || urlError} />
+          <FormError message={error} />
 
           <FormSuccess message={success} />
           <Button disabled={isPending} type="submit" className="w-full">
@@ -114,4 +108,10 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+const SuspenseWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <LoginForm />
+  </Suspense>
+);
+
+export default SuspenseWrapper;
