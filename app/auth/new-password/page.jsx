@@ -1,7 +1,11 @@
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 const NewPasswordPage = () => {
-  return <div>NewPasswordPage</div>;
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
+    return <div>{token}</div>;
 };
 
 export default NewPasswordPage;
