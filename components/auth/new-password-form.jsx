@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { NewPasswordSchema, RegisterSchema } from "@/schemas";
+import { NewPasswordSchema } from "@/schemas";
 import {
   Form,
   FormControl,
@@ -20,13 +20,11 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { register } from "@/actions/register";
 import { newPassword } from "@/actions/new-password";
 
 const NewPasswordForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
   const [isPending, startTransition] = useTransition();
 
   const form = useForm({
@@ -36,14 +34,17 @@ const NewPasswordForm = () => {
     },
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = (values, token) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
       newPassword(values, token).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setSuccess(data.success);
+        }
       });
     });
   };
@@ -65,6 +66,10 @@ const SearchParamsForm = ({ form, onSubmit, error, success, isPending }) => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
+  const handleSubmit = (values) => {
+    onSubmit(values, token);
+  };
+
   return (
     <CardWrapper
       headerLabel={"Enter a New Password"}
@@ -72,10 +77,9 @@ const SearchParamsForm = ({ form, onSubmit, error, success, isPending }) => {
       backButtonHref={"/auth/login"}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="space-y-4">
             <FormField
-              disabled={isPending}
               control={form.control}
               name="password"
               render={({ field }) => (
