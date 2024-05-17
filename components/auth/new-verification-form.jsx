@@ -65,9 +65,7 @@ const NewVerificationFormContent = () => {
       <div className="flex items-center justify-center w-full">
         {!success && !error && <BeatLoader />}
         <FormSuccess message={success} />
-        (!success && (
-        <FormError message={error} />
-        ))
+        {!success && <FormError message={error} />}
       </div>
     </CardWrapper>
   );
