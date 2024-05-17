@@ -20,7 +20,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { newPassword } from "@/actions/new-password";
 
@@ -90,4 +90,10 @@ const NewPasswordForm = () => {
   );
 };
 
-export default NewPasswordForm;
+const SuspenseWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <NewPasswordForm />
+  </Suspense>
+);
+
+export default SuspenseWrapper;

@@ -17,7 +17,7 @@ export const newPassword = async (values, token) => {
     return { error: "Invalid fields!" };
   }
 
-  const { password } = values.password;
+  const { password } = validateFields.data;
 
   const exisitingToken = await getPasswordResetTokenByToken(token);
 
