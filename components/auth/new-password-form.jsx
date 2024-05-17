@@ -54,7 +54,7 @@ const NewPasswordForm = () => {
         })
         .catch((err) => {
           setError("An unexpected error occurred.");
-          console.error(err);
+          console.error("Error during password reset:", err);
         });
     });
   };
@@ -83,6 +83,11 @@ const SearchParamsForm = ({ form, onSubmit, error, success, isPending }) => {
   }, [token]);
 
   const handleSubmit = (values) => {
+    if (!token) {
+      console.error("Token is undefined at form submission.");
+      setError("Token is missing or invalid.");
+      return;
+    }
     onSubmit(values, token);
   };
 
