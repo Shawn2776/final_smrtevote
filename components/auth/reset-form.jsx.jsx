@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition, Suspense } from "react";
 
-import { LoginSchema } from "@/schemas";
+import { ResetSchema } from "@/schemas";
 import {
   Form,
   FormControl,
@@ -20,21 +20,18 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
-import useCustomSearchParams from "@/hooks/useCustomSearchParams";
-import Link from "next/link";
+import { reset } from "@/actions/reset";
 
-const LoginForm = () => {
-  const urlError = useCustomSearchParams();
-  const [error, setError] = useState(urlError);
+const ResetForm = () => {
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const [isPending, startTransition] = useTransition();
 
   const form = useForm({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(ResetSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
@@ -43,7 +40,7 @@ const LoginForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      login(values).then((data) => {
+      reset(values).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
         // TODO: Add when we add 2FA
@@ -54,10 +51,9 @@ const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel={"Welcome Back!"}
-      backButtonLabel={"Don't have an Account?"}
-      backButtonHref={"/auth/register"}
-      showSocial
+      headerLabel={"Forgot Your Password?"}
+      backButtonLabel={"Back to Login"}
+      backButtonHref={"/auth/rlogin"}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -80,29 +76,6 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
-
-            <FormField
-              disabled={isPending}
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="********" type="password" />
-                  </FormControl>
-                  <Button
-                    size="sm"
-                    variant="link"
-                    asChild
-                    className="px-0 font-normal"
-                  >
-                    <Link href="/auth/reset">Forgot Password?</Link>
-                  </Button>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
 
           <FormError message={error} />
@@ -113,7 +86,7 @@ const LoginForm = () => {
             type="submit"
             className="w-full shadow-md shadow-gray-500"
           >
-            Login
+            Send Reset Email
           </Button>
         </form>
       </Form>
@@ -121,10 +94,4 @@ const LoginForm = () => {
   );
 };
 
-const SuspenseWrapper = () => (
-  <Suspense fallback={<div>Loading...</div>}>
-    <LoginForm />
-  </Suspense>
-);
-
-export default SuspenseWrapper;
+export default ResetForm;
