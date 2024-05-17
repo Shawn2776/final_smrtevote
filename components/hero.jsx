@@ -13,7 +13,7 @@ const Hero = () => {
           <p className="mt-6 mb-8 text-lg sm:mb-12 text-white">
             Secure, cloud-based voting platform
             <br className="hidden md:inline lg:hidden text-white" />
-            for colleges, universities, businesses, and individuals.
+            for education, business and individuals.
           </p>
           <div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
             <div className="flex flex-col">
