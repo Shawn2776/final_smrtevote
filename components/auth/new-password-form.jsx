@@ -3,7 +3,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition, Suspense } from "react";
+import { useState, useTransition, Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { NewPasswordSchema } from "@/schemas";
@@ -38,14 +38,24 @@ const NewPasswordForm = () => {
     setError("");
     setSuccess("");
 
+    if (!token) {
+      setError("Token is missing or invalid.");
+      return;
+    }
+
     startTransition(() => {
-      newPassword(values, token).then((data) => {
-        if (data.error) {
-          setError(data.error);
-        } else {
-          setSuccess(data.success);
-        }
-      });
+      newPassword(values, token)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          } else {
+            setSuccess(data.success);
+          }
+        })
+        .catch((err) => {
+          setError("An unexpected error occurred.");
+          console.error(err);
+        });
     });
   };
 
@@ -65,6 +75,12 @@ const NewPasswordForm = () => {
 const SearchParamsForm = ({ form, onSubmit, error, success, isPending }) => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+
+  useEffect(() => {
+    if (!token) {
+      console.warn("Token is missing in the URL parameters.");
+    }
+  }, [token]);
 
   const handleSubmit = (values) => {
     onSubmit(values, token);
