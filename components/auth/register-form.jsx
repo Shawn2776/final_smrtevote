@@ -109,7 +109,11 @@ const RegisterForm = () => {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button disabled={isPending} type="submit" className="w-full">
+          <Button
+            disabled={isPending}
+            type="submit"
+            className="w-full shadow-md shadow-gray-500"
+          >
             Create Account
           </Button>
         </form>
