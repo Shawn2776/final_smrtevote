@@ -1,9 +1,10 @@
 "use client";
 
 import * as z from "zod";
-import { Suspense } from "react";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { NewPasswordSchema, RegisterSchema } from "@/schemas";
 import {
   Form,
@@ -13,6 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import CardWrapper from "@/components/auth/card-wrapper";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -49,49 +51,42 @@ const NewPasswordForm = () => {
       });
     });
   };
-
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <CardWrapper
-        headerLabel={"Enter a New Password"}
-        backButtonLabel={"Back to Login"}
-        backButtonHref={"/auth/login"}
-      >
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-4">
-              <FormField
-                disabled={isPending}
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="********"
-                        type="password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormError message={error} />
-            <FormSuccess message={success} />
-            <Button
+    <CardWrapper
+      headerLabel={"Enter a New Password"}
+      backButtonLabel={"Back to Login"}
+      backButtonHref={"/auth/login"}
+    >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="space-y-4">
+            <FormField
               disabled={isPending}
-              type="submit"
-              className="w-full shadow-md shadow-gray-500"
-            >
-              Reset Password
-            </Button>
-          </form>
-        </Form>
-      </CardWrapper>
-    </Suspense>
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="********" type="password" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormError message={error} />
+          <FormSuccess message={success} />
+          <Button
+            disabled={isPending}
+            type="submit"
+            className="w-full shadow-md shadow-gray-500"
+          >
+            Reset Password
+          </Button>
+        </form>
+      </Form>
+    </CardWrapper>
   );
 };
 
