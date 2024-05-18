@@ -14,7 +14,7 @@ import {
 import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
 import { db } from "@/lib/db";
-import { getTwoFactorConfirmationByUserId } from "@/data/twoFactorConfirmation";
+import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 
 export const login = async (values) => {
   const validatedFields = LoginSchema.safeParse(values);

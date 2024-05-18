@@ -13,6 +13,7 @@ export const getTwoFactorTokenByToken = async (token) => {
     return null;
   }
 };
+
 export const getTwoFactorTokenByEmail = async (email) => {
   console.log("7");
   try {
