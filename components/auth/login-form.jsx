@@ -3,7 +3,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition, Suspense } from "react";
+import { useState, useEffect, useTransition, Suspense } from "react";
 
 import { LoginSchema } from "@/schemas";
 import {
@@ -25,7 +25,7 @@ import Link from "next/link";
 
 const LoginForm = () => {
   const urlError = useCustomSearchParams();
-  const [error, setError] = useState(urlError);
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showTwoFactor, setShowTwoFactor] = useState(false);
 
@@ -38,6 +38,12 @@ const LoginForm = () => {
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (urlError) {
+      setError(urlError);
+    }
+  }, [urlError]);
 
   const onSubmit = (values) => {
     setError("");
@@ -84,19 +90,6 @@ const LoginForm = () => {
                     <FormLabel>Two Factor Code</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="123456" />
-                      {/* <InputOTP maxLength={6}>
-                        <InputOTPGroup>
-                          <InputOTPSlot index={0} />
-                          <InputOTPSlot index={1} />
-                          <InputOTPSlot index={2} />
-                        </InputOTPGroup>
-                        <InputOTPSeparator />
-                        <InputOTPGroup>
-                          <InputOTPSlot index={3} />
-                          <InputOTPSlot index={4} />
-                          <InputOTPSlot index={5} />
-                        </InputOTPGroup>
-                      </InputOTP> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
