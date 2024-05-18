@@ -23,6 +23,7 @@ import { FormSuccess } from "../form-success";
 import { Suspense, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { newPassword } from "@/actions/new-password";
+import { BeatLoader } from "react-spinners";
 
 const NewPasswordForm = () => {
   const searchParams = useSearchParams();
@@ -91,7 +92,13 @@ const NewPasswordForm = () => {
 };
 
 const SuspenseWrapper = () => (
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense
+    fallback={
+      <div>
+        <BeatLoader />
+      </div>
+    }
+  >
     <NewPasswordForm />
   </Suspense>
 );

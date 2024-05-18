@@ -45,8 +45,10 @@ export default function PublicNavbar() {
             {menus.map((item, idx) => (
               <li
                 key={idx}
-                className={`text-neutral-200 hover:text-indigo-600 ${
-                  pathname === item.path ? "border-b-2" : ""
+                className={`text-neutral-200  ${
+                  pathname === item.path
+                    ? "border-b-2 hover:text-white cursor-default"
+                    : "hover:text-sky-600"
                 }`}
               >
                 <Link href={item.path}>{item.title}</Link>
@@ -55,12 +57,16 @@ export default function PublicNavbar() {
           </ul>
         </div>
         <div className="hidden lg:block">
-          <button className="px-6 py-2 text-white transition-all duration-300 border rounded-md bg-sky-500 border-sky-500 hover:bg-white hover:text-sky-500">
-            Sign Up
-          </button>
-          <button className="px-6 py-2 transition-all duration-300 text-sky-500 rounded-r-md hover:text-red-600">
-            Sign In
-          </button>
+          <Link href="/auth/register">
+            <button className="px-6 py-2 text-white transition-all duration-300 border rounded-md bg-sky-500 border-sky-500 hover:bg-white hover:text-sky-500">
+              Sign Up
+            </button>
+          </Link>
+          <Link href="/auth/login">
+            <button className="px-6 py-2 transition-all duration-300 text-sky-500 rounded-r-md hover:text-red-600">
+              Sign In
+            </button>
+          </Link>
         </div>
       </div>
     </nav>
