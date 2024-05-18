@@ -83,7 +83,7 @@ const LoginForm = () => {
                   <FormItem>
                     <FormLabel>Two Factor Code</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="123456" type="text" />
+                      <Input {...field} placeholder="123456" />
                       {/* <InputOTP maxLength={6}>
                         <InputOTPGroup>
                           <InputOTPSlot index={0} />
@@ -103,6 +103,7 @@ const LoginForm = () => {
                 )}
               />
             )}
+
             {!showTwoFactor && (
               <>
                 <FormField
