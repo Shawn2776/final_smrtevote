@@ -22,12 +22,6 @@ import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
 import useCustomSearchParams from "@/hooks/useCustomSearchParams";
 import Link from "next/link";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "../ui/input-otp";
 
 const LoginForm = () => {
   const urlError = useCustomSearchParams();

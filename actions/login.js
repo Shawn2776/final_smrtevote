@@ -45,10 +45,14 @@ export const login = async (values) => {
   }
 
   if (existingUser.isTwoFactorEnabled && existingUser.email) {
+    console.log("1");
     const twoFactorToken = await generateTwoFactorToken(existingUser.email);
+    console.log("5");
     if (code) {
+      console.log("6");
       const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
 
+      console.log("9");
       if (!twoFactorToken || twoFactorToken.token !== code) {
         return { error: "Invalid two-factor code" };
       }
@@ -59,19 +63,26 @@ export const login = async (values) => {
         return { error: "Two-factor code has expired" };
       }
 
+      console.log("10");
       await db.twoFactorToken.delete({
         where: { id: twoFactorToken.id },
       });
 
+      console.log("11");
+
+      console.log("12");
       const existingConfirmation = await getTwoFactorConfirmationByUserId(
         existingUser.id
       );
 
+      console.log("15");
       if (existingConfirmation) {
         await db.existingConfirmation.delete({
           where: { id: existingConfirmation.id },
         });
       }
+
+      console.log("16");
 
       await db.twoFactorConfirmation.create({
         data: {
@@ -79,11 +90,17 @@ export const login = async (values) => {
         },
       });
     } else {
+      console.log("17");
       await sendTwoFactorTokenEmail(existingUser.email, twoFactorToken.token);
 
+      console.log("18");
       return { twoFactor: true };
     }
+
+    console.log("20");
   }
+
+  console.log("21");
 
   try {
     await signIn("credentials", {
