@@ -22,8 +22,15 @@ import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
 import { useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 
-const LoginForm = () => {
+export const LoginForm = () => {
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email in use with different Provider."
+      : "";
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -38,10 +45,10 @@ const LoginForm = () => {
   });
 
   const onSubmit = (values) => {
-    startTransition(() => {
-      setError("");
-      setSuccess("");
+    setError("");
+    setSuccess("");
 
+    startTransition(() => {
       login(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
@@ -50,9 +57,9 @@ const LoginForm = () => {
   };
   return (
     <CardWrapper
-      headerLabel={"Login to your Account"}
-      backButtonLabel={"Don't have an Account?"}
-      backButtonHref={"/auth/register"}
+      headerLabel="Welcome Back!"
+      backButtonLabel="Don't have an Account?"
+      backButtonHref="/auth/register"
       showSocial
     >
       <Form {...form}>
@@ -92,7 +99,7 @@ const LoginForm = () => {
               )}
             />
           </div>
-          <FormError message={error} />
+          <FormError message={error || urlError} />
           <FormSuccess message={success} />
           <Button
             disabled={isPending}
