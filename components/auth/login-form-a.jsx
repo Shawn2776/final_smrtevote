@@ -125,7 +125,7 @@ const LoginFormA = () => {
             type="submit"
             className="w-full shadow-md shadow-gray-500"
           >
-            Login{" "}
+            Login
           </Button>
         </form>
       </Form>
