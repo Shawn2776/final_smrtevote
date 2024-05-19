@@ -39,6 +39,7 @@ export const {
       if (!existingUser?.emailVerified) return false;
 
       if (existingUser.isTwoFactorEnabled) {
+        console.log("1");
         const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
           existingUser.id
         );
@@ -46,6 +47,8 @@ export const {
         if (!twoFactorConfirmation) {
           return false;
         }
+
+        console.log("2");
 
         // Delete the confirmation after successful login
         // await db.twoFactorConfirmation.delete({
