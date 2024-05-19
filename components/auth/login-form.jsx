@@ -21,10 +21,11 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
+import { BeatLoader } from "react-spinners";
 
-export const LoginForm = () => {
+const LoginForm = () => {
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
@@ -114,4 +115,16 @@ export const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+const SuspenseWrapper = () => (
+  <Suspense
+    fallback={
+      <div>
+        <BeatLoader />
+      </div>
+    }
+  >
+    <LoginForm />
+  </Suspense>
+);
+
+export default SuspenseWrapper;
