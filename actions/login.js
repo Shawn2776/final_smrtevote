@@ -15,8 +15,9 @@ import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
 import { db } from "@/lib/db";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
+import { redirect } from "next/navigation";
 
-export const login = async (values) => {
+export const Login = async (values) => {
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -48,19 +49,13 @@ export const login = async (values) => {
     if (code) {
       const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
 
-      if (!twoFactorToken) {
-        return { error: "Invalid Code!" };
-      }
-
-      if (twoFactorToken.token !== code) {
-        return { error: "Invalid Code!" };
+      if (!twoFactorToken || twoFactorToken.token !== code) {
+        return { error: "Invalid 2FA Code!" };
       }
 
       const hasExpired = new Date(twoFactorToken.expires) < new Date();
 
-      if (hasExpired) {
-        return { error: "Code has expired!" };
-      }
+      if (hasExpired) return { error: "2FA Code has expired!" };
 
       await db.twoFactorToken.delete({
         where: { id: twoFactorToken.id },
@@ -83,8 +78,7 @@ export const login = async (values) => {
       });
     } else {
       const twoFactorToken = await generateTwoFactorToken(existingUser.email);
-
-      await sendTwoFactorTokenEmail(existingUser.email, twoFactorToken.token);
+      await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
 
       return { twoFactor: true };
     }

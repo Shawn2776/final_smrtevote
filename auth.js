@@ -51,9 +51,9 @@ export const {
         console.log("2");
 
         // Delete the confirmation after successful login
-        // await db.twoFactorConfirmation.delete({
-        //   where: { id: twoFactorConfirmation.id },
-        // });
+        await db.twoFactorConfirmation.delete({
+          where: { id: twoFactorConfirmation.id },
+        });
       }
 
       return true;
