@@ -18,11 +18,12 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/schemas";
 import { Login } from "@/actions/login";
+import { BeatLoader } from "react-spinners";
 
 const LoginForm = () => {
   const searchParams = useSearchParams();
@@ -162,4 +163,16 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+const SuspenseWrapper = () => (
+  <Suspense
+    fallback={
+      <div>
+        <BeatLoader />
+      </div>
+    }
+  >
+    <LoginForm />
+  </Suspense>
+);
+
+export default SuspenseWrapper;
