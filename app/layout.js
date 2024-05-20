@@ -12,7 +12,7 @@ export const metadata = {
     "SMRTeVote is a versatile online voting platform suitable for colleges, universities, businesses, and individuals. Our platform offers a secure and intuitive way to conduct various types of elections and polls. Whether you're managing a large-scale university election or a small business decision, SMRTeVote streamlines the voting process, ensures data security, and promotes engagement among participants.",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={poppins.className}>{children}</body>

@@ -1,4 +1,5 @@
-import { auth, signOut } from "@/auth";
+import { ClientLogout } from "@/actions/logout";
+import { auth } from "@/auth";
 import React from "react";
 
 const SettingsPage = async () => {
@@ -6,15 +7,9 @@ const SettingsPage = async () => {
   return (
     <div className="flex flex-col gap-4">
       {JSON.stringify(session)}
-      <form
-        action={async () => {
-          "use server";
-
-          await signOut();
-        }}
-      >
-        <button type="submit">Sign out</button>
-      </form>
+      <button onClick={ClientLogout} type="submit">
+        Sign out
+      </button>
     </div>
   );
 };
