@@ -3,6 +3,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/footer";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["600"] });
 
@@ -15,7 +16,10 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>{children}</body>
+      <body className={poppins.className}>
+        {children}
+        <Footer />
+      </body>
       <GoogleAnalytics gaId="G-1Q7ZFN5YPM" />
     </html>
   );
