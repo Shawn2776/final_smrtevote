@@ -1,3 +1,13 @@
+import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { DeleteIcon } from "lucide-react";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
+
 const ElectionsList = ({ elections }) => {
   return (
     <>
@@ -31,7 +41,25 @@ const ElectionsList = ({ elections }) => {
                     </p>
                   </div>
                 </div>
-                <div className="pr-4">test</div>
+                <div className="pr-4">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <BiDotsHorizontalRounded className="w-6 h-6" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-40" align="end">
+                      <Link
+                        href={`/elections/${election.id}`}
+                        variant="ghost"
+                        className="w-full"
+                      >
+                        <DropdownMenuItem className="flex items-center gap-4">
+                          <DeleteIcon className="w-4 h-4 mr-2" />
+                          View
+                        </DropdownMenuItem>
+                      </Link>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </li>
             ))}
           </ul>
@@ -53,7 +81,7 @@ const ElectionsList = ({ elections }) => {
             {elections.map((election, index) => (
               <li key={election.id}>
                 <div
-                  className={`grid grid-cols-7 text-sm gap-4 ${
+                  className={`grid grid-cols-7 pt-2 pb-2 pl-2 text-sm gap-4 ${
                     index % 2 === 0 ? "bg-gray-300" : ""
                   }`}
                 >
@@ -63,6 +91,15 @@ const ElectionsList = ({ elections }) => {
                   <p>{election.status}</p>
                   <p>{election.electionType}</p>
                   <p>{election.candidates}</p>
+                  <p>
+                    <Link
+                      href={`/elections/${election.id}`}
+                      variant="ghost"
+                      className="w-full"
+                    >
+                      View
+                    </Link>
+                  </p>
                 </div>
               </li>
             ))}
