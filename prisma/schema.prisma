@@ -1,70 +1,95 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
-// prisma/schema.prisma
 datasource db {
-  provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?
-  role          UserRole  @default(USER)
-  accounts      Account[]
-  elections     Election[]
-  isTwoFactorEnabled Boolean @default(false)
+  id                    String                 @id @default(cuid())
+  name                  String?
+  email                 String?                @unique
+  emailVerified         DateTime?
+  image                 String?
+  password              String?
+  role                  UserRole               @default(USER)
+  isTwoFactorEnabled    Boolean                @default(false)
+  accounts              Account[]
+  elections             Election[]
   twoFactorConfirmation TwoFactorConfirmation?
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
- 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([provider, providerAccountId])
 }
 
 model Election {
-  id        String   @id @default(cuid())
-  name      String
-  description String
+  id           String      @id @default(cuid())
+  name         String
+  description  String
+  status       String      @default("PENDING")
+  userId       String
   electionDate String
-  status    String  @default("PENDING")
-  userId    String
-  electionType      String
-  candidates Candidate[]
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  electionType String
+  candidates   Candidate[]
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Candidate {
-  id        String   @id @default(cuid())
-  name      String
+  id          String   @id @default(cuid())
+  name        String
   description String
-  electionId String
-  election   Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  electionId  String
+  election    Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum ElectionStatus {
@@ -73,44 +98,9 @@ enum ElectionStatus {
   CLOSED
 }
 
-model VerificationToken {
-  id        String   @id @default(cuid())
-  email     String
-  token     String  @unique
-  expires   DateTime
-
-  @@unique([email, token])
-}
-
 enum UserRole {
   USER
   ADMIN
   VOTER
   SUPADMIN
-}
-
-model PasswordResetToken {
-  id        String   @id @default(cuid())
-  email     String
-  token     String  @unique
-  expires   DateTime
-
-  @@unique([email, token])
-}
-
-model TwoFactorToken {
-  id        String   @id @default(cuid())
-  email     String
-  token     String  @unique
-  expires   DateTime
-
-  @@unique([email, token])
-}
-
-model TwoFactorConfirmation {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId])
 }

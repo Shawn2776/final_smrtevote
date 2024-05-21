@@ -2,13 +2,14 @@ import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { FaUser } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import { LogoutButton } from "./logout-button";
-import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+
 import { ExitIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
 import { CheckCheckIcon } from "lucide-react";

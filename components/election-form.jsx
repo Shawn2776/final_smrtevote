@@ -16,12 +16,12 @@ import {
 } from "@/components/ui/form";
 
 import CardWrapper from "@/components/auth/card-wrapper";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { FormError } from "./form-error";
-import { FormSuccess } from "./form-success";
-import { useState, useTransition } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 import { newElection } from "@/actions/new-election";
+import { useState, useTransition } from "react";
 import {
   Select,
   SelectContent,
@@ -31,16 +31,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { CalendarIcon } from "@radix-ui/react-icons";
-import { Calendar } from "./ui/calendar";
-import { format } from "date-fns";
 
-const ElectionForm = () => {
+const NewElectionForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [date, setDate] = useState("");
-  const [electionType, setElectionType] = useState("");
 
   const [isPending, startTransition] = useTransition();
 
@@ -50,14 +44,7 @@ const ElectionForm = () => {
       name: "",
       description: "",
       electionDate: "",
-      electionType: "",
-      candidates: z
-        .array(
-          z.object({
-            name: z.string(),
-          })
-        )
-        .optional(),
+      electionType: z.enum(["election", "poll"]),
     },
   });
 
@@ -66,27 +53,18 @@ const ElectionForm = () => {
       setError("");
       setSuccess("");
 
-      newElection(values)
-        .then((data) => {
-          setError(data.error);
-          setSuccess(data.success);
-        })
-        .finally(() => {
-          form.reset();
-          redirect("/dashboard");
-        });
+      newElection(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
     });
-  };
-
-  const handleOrgChange = (electionType) => {
-    setElectionType(electionType);
   };
 
   return (
     <CardWrapper
-      headerLabel={"Create an Election"}
+      headerLabel={"New Election"}
       backButtonLabel={""}
-      backButtonHref={"/"}
+      backButtonHref={""}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -97,18 +75,15 @@ const ElectionForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Election Name</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Presidential Election, Lunch Poll, etc."
-                      type="text"
-                    />
+                    <Input {...field} placeholder="" type="text" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               disabled={isPending}
               control={form.control}
@@ -117,11 +92,7 @@ const ElectionForm = () => {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Election to choose the next president of the United States, etc."
-                      type="text"
-                    />
+                    <Input {...field} placeholder="" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -136,39 +107,7 @@ const ElectionForm = () => {
                 <FormItem>
                   <FormLabel>Date Range</FormLabel>
                   <FormControl>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          id="date"
-                          variant={"outline"}
-                          className="w-[300px] justify-start text-left font-normal"
-                        >
-                          <CalendarIcon className="w-4 h-4 mr-2" />
-                          {date?.from ? (
-                            date.to ? (
-                              <>
-                                {format(date.from, "LLL dd, y")} -{" "}
-                                {format(date.to, "LLL dd, y")}
-                              </>
-                            ) : (
-                              format(date.from, "LLL dd, y")
-                            )
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          initialFocus
-                          mode="range"
-                          defaultMonth={date?.from}
-                          selected={date}
-                          onSelect={setDate}
-                          numberOfMonths={2}
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    <Input {...field} placeholder="5/12/2024 - 5/15/2024" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -176,31 +115,51 @@ const ElectionForm = () => {
             />
 
             <FormField
+              disabled={isPending}
+              control={form.control}
+              name="electionType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Date Range</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Election Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="election">Election</SelectItem>
+                        <SelectItem value="poll">Poll</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* <FormField
+              disabled={isPending}
               control={form.control}
               name="electionType"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Election Type</FormLabel>
-                  <Select
-                    {...field}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    onChange={handleOrgChange}
-                  >
+
+                  <Select onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select Election Type" />
                       </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="election">Election</SelectItem>
+                        <SelectItem value="poll">Poll</SelectItem>
+                      </SelectContent>
                     </FormControl>
-                    <SelectContent>
-                      <SelectItem value="election">Election</SelectItem>
-                      <SelectItem value="poll">Poll</SelectItem>
-                    </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
@@ -209,7 +168,7 @@ const ElectionForm = () => {
             type="submit"
             className="w-full shadow-md shadow-gray-500"
           >
-            Create Election
+            Create New Election
           </Button>
         </form>
       </Form>
@@ -217,4 +176,4 @@ const ElectionForm = () => {
   );
 };
 
-export default ElectionForm;
+export default NewElectionForm;
