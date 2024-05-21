@@ -60,8 +60,13 @@ const ProtectedNavbar = () => {
               Settings
             </Link>
           </div>
+          <hr className="border-gray-200 dark:border-gray-800 pb-4" />
+          <div className="w-full flex justify-end">
+            <UserButton />
+          </div>
         </SheetContent>
       </Sheet>
+
       <Link className="hidden mr-6 lg:flex" href="#">
         <span className="sr-only">Acme Inc</span>
       </Link>
