@@ -2,10 +2,12 @@
 
 import * as z from "zod";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { NewElectionSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { startTransition, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import CardWrapper from "./auth/card-wrapper";
 import {
   Form,
   FormControl,
@@ -13,38 +15,55 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-
-import CardWrapper from "@/components/auth/card-wrapper";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
-import { newElection } from "@/actions/new-election";
-import { useState, useTransition } from "react";
+} from "./ui/form";
+import { Input } from "./ui/input";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { FormError } from "./form-error";
+import { FormSuccess } from "./form-success";
+import { Button } from "./ui/button";
+import { updateElectionById } from "@/actions/elections";
 
-const NewElectionForm = () => {
+export const Election = ({ election }) => {
+  const {
+    id,
+    name,
+    description,
+    electionDate,
+    status,
+    electionType,
+    candidates,
+  } = election;
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const [isPending, startTransition] = useTransition();
 
+  const [elect, setElect] = useState({
+    id: id,
+    name: name,
+    description: description,
+    electionDate: electionDate,
+    status: status,
+    electionType: electionType,
+    candidates: candidates,
+  });
+
   const form = useForm({
     resolver: zodResolver(NewElectionSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      electionDate: "",
-      electionType: z.enum(["election", "poll"]),
+      name: elect.name,
+      description: elect.description,
+      electionDate: elect.electionDate,
+      status: elect.status,
+      electionType: elect.electionType,
+      candidates: elect.candidates,
     },
   });
 
@@ -53,7 +72,7 @@ const NewElectionForm = () => {
       setError("");
       setSuccess("");
 
-      newElection(values).then((data) => {
+      updateElectionById(elect.id, values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
       });
@@ -62,9 +81,9 @@ const NewElectionForm = () => {
 
   return (
     <CardWrapper
-      headerLabel={"New Election"}
+      headerLabel={"Update Election"}
       backButtonLabel={"Back to Dashboard"}
-      backButtonHref={"/elections"}
+      backButtonHref={"/dashboard"}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -122,7 +141,10 @@ const NewElectionForm = () => {
                 <FormItem>
                   <FormLabel>Election Type</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange}>
+                    <Select
+                      defaultValue={elect.electionType}
+                      onValueChange={field.onChange}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select Election Type" />
                       </SelectTrigger>
@@ -168,12 +190,10 @@ const NewElectionForm = () => {
             type="submit"
             className="w-full shadow-md shadow-gray-500"
           >
-            Create New Election
+            Update Election
           </Button>
         </form>
       </Form>
     </CardWrapper>
   );
 };
-
-export default NewElectionForm;

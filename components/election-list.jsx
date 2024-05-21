@@ -7,6 +7,7 @@ import {
 } from "./ui/dropdown-menu";
 import { DeleteIcon } from "lucide-react";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { FaEye } from "react-icons/fa";
 
 const ElectionsList = ({ elections }) => {
   return (
@@ -53,7 +54,7 @@ const ElectionsList = ({ elections }) => {
                         className="w-full"
                       >
                         <DropdownMenuItem className="flex items-center gap-4">
-                          <DeleteIcon className="w-4 h-4 mr-2" />
+                          <FaEye className="w-4 h-4 mr-2" />
                           View
                         </DropdownMenuItem>
                       </Link>
