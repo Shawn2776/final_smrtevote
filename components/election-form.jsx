@@ -66,10 +66,15 @@ const ElectionForm = () => {
       setError("");
       setSuccess("");
 
-      newElection(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      newElection(values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+        })
+        .finally(() => {
+          form.reset();
+          redirect("/dashboard");
+        });
     });
   };
 

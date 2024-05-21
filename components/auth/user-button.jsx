@@ -10,6 +10,9 @@ import { useSession } from "next-auth/react";
 import { LogoutButton } from "./logout-button";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { ExitIcon } from "@radix-ui/react-icons";
+import { Button } from "../ui/button";
+import { CheckCheckIcon } from "lucide-react";
+import Link from "next/link";
 
 const UserButton = () => {
   const { data } = useSession();
@@ -31,6 +34,12 @@ const UserButton = () => {
             Logout
           </DropdownMenuItem>
         </LogoutButton>
+        <Link href="/new-election" variant="ghost" className="w-full">
+          <DropdownMenuItem className="flex items-center gap-4">
+            <CheckCheckIcon className="w-4 h-4 mr-2" />
+            New Election
+          </DropdownMenuItem>
+        </Link>
       </DropdownMenuContent>
     </DropdownMenu>
   );
