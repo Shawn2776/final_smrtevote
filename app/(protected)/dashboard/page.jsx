@@ -1,21 +1,17 @@
-"use client";
+import { auth } from "@/auth";
+import { getElectionsByUserId } from "@/actions/elections";
+import ElectionsList from "@/components/election-list";
 
-import { signOut, useSession } from "next-auth/react";
+const DashboardPage = async () => {
+  const session = await auth();
 
-const DashboardPage = () => {
-  const session = useSession();
+  if (!session) {
+    return <div>Loading...</div>;
+  }
 
-  const handleSignout = () => {
-    signOut();
-  };
-  return (
-    <div>
-      {JSON.stringify(session)}
-      <button onClick={handleSignout} type="submit">
-        Sign out
-      </button>
-    </div>
-  );
+  const elections = await getElectionsByUserId(session.user.id);
+
+  return <ElectionsList elections={elections} />;
 };
 
 export default DashboardPage;

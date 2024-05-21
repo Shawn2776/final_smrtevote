@@ -23,6 +23,7 @@ model User {
   password      String?
   role          UserRole  @default(USER)
   accounts      Account[]
+  elections     Election[]
   isTwoFactorEnabled Boolean @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
 }
@@ -44,6 +45,32 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
  
   @@unique([provider, providerAccountId])
+}
+
+model Election {
+  id        String   @id @default(cuid())
+  name      String
+  description String
+  electionDate String
+  status    String  @default("PENDING")
+  userId    String
+  electionType      String
+  candidates Candidate[]
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Candidate {
+  id        String   @id @default(cuid())
+  name      String
+  description String
+  electionId String
+  election   Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+}
+
+enum ElectionStatus {
+  PENDING
+  OPEN
+  CLOSED
 }
 
 model VerificationToken {

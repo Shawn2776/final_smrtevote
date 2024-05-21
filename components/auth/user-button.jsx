@@ -14,7 +14,6 @@ import { ExitIcon } from "@radix-ui/react-icons";
 const UserButton = () => {
   const { data } = useSession();
 
-  console.log(data.user?.image);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>

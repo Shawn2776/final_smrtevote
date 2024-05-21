@@ -23,3 +23,12 @@ export const NewPasswordSchema = z.object({
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
 });
+
+const electionTypes = ["election", "poll"];
+export const NewElectionSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+  electionDate: z.string(),
+  electionType: z.enum(electionTypes),
+  candidates: z.optional(z.array(z.string())),
+});
