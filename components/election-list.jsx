@@ -70,7 +70,7 @@ const ElectionsList = ({ elections }) => {
         <div className="p-4 ml-10 mr-10 bg-white rounded-md">
           <ul>
             <li>
-              <div className="grid grid-cols-7 mb-4 font-extrabold">
+              <div className="grid grid-cols-7 mb-4 font-extrabold pl-4">
                 <p>Name</p>
                 <p>Description</p>
                 <p>Date</p>
