@@ -29,6 +29,11 @@ const UserButton = () => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="end">
+        <div className="w-full flex flex-col text-xs">
+          <span>{data.user?.name}</span>
+
+          <span>{data.user?.email}</span>
+        </div>
         <LogoutButton>
           <DropdownMenuItem className="flex items-center gap-4">
             <ExitIcon className="w-4 h-4 mr-2" />

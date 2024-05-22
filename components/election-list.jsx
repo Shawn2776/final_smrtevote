@@ -8,6 +8,7 @@ import {
 import { DeleteIcon } from "lucide-react";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { FaEye } from "react-icons/fa";
+import { Button } from "./ui/button";
 
 const ElectionsList = ({ elections }) => {
   return (
@@ -121,13 +122,15 @@ const ElectionsList = ({ elections }) => {
                   <p className="capitalize">{election.electionType}</p>
                   <p>{election.candidates}</p>
                   <p>
-                    <Link
-                      href={`/elections/${election.id}`}
-                      variant="ghost"
-                      className="w-full"
-                    >
-                      View
-                    </Link>
+                    <Button asChild variant="outline">
+                      <Link
+                        href={`/elections/${election.id}`}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        View
+                      </Link>
+                    </Button>
                   </p>
                 </div>
               </li>
