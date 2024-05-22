@@ -13,10 +13,10 @@ import { Button } from "./ui/button";
 const ElectionsList = ({ elections }) => {
   return (
     <>
-      <div className="w-full h-full flex flex-col lg:hidden">
+      <div className="flex flex-col w-full h-full lg:hidden">
         <ul className="bg-white">
           <li className="my-4">
-            <div className="flex w-full font-extrabold pl-4">
+            <div className="flex w-full pl-4 font-extrabold">
               <p className="w-4/6">Name</p>
               <p className="w-1/6">Status</p>
               <p className="w-1/6">Actions</p>
@@ -25,11 +25,11 @@ const ElectionsList = ({ elections }) => {
           {elections.map((election, index) => (
             <li key={election.id}>
               <div
-                className={`w-full flex justify-center pt-2 pb-2 pl-2 text-sm gap-4 items-center ${
+                className={`w-full flex justify-center pt-2 pb-2 pl-2 text-sm gap-1 items-center ${
                   index % 2 === 0 ? "bg-gray-300" : ""
                 }`}
               >
-                <div className="w-4/6 flex flex-col">
+                <div className="flex flex-col w-4/6 ">
                   <p>{election.name}</p>
                   <span className="text-xs text-gray-700">
                     {election.description}
@@ -37,14 +37,14 @@ const ElectionsList = ({ elections }) => {
                 </div>
 
                 <div className="w-1/6">
-                  <p className="w-full">
+                  <p className="flex justify-start w-full ">
                     <span
-                      className={`text-xs flex justify-start px-2 py-1 border shadow-md shadow-black border-black ${
+                      className={`w-full text-xs flex justify-center px-2 py-1 border shadow-md rounded ${
                         election.status === "PENDING"
-                          ? "bg-orange-400 text-black"
+                          ? "bg-orange-400/35 text-orange-800 shadow-orange-800 border-orange-800"
                           : election.status === "OPEN"
-                          ? "bg-green-400 text-black"
-                          : "bg-red-400 text-black"
+                          ? "bg-emerald-400/35 text-emerald-800 shadow-emerald-800 border-emerald-800"
+                          : "bg-red-400/35 text-red-800 shadow-red-800 border-red-800"
                       }`}
                     >
                       {election.status}
@@ -52,7 +52,7 @@ const ElectionsList = ({ elections }) => {
                   </p>
                 </div>
 
-                <div className="w-1/6 flex justify-center">
+                <div className="flex justify-center w-1/6">
                   <p>
                     <DropdownMenu>
                       <DropdownMenuTrigger>
@@ -82,11 +82,11 @@ const ElectionsList = ({ elections }) => {
           ))}
         </ul>
       </div>
-      <div className="hidden lg:flex w-full h-full">
+      <div className="hidden w-full h-full lg:flex">
         <div className="p-4 ml-10 mr-10 bg-white rounded-md">
           <ul>
             <li>
-              <div className="grid grid-cols-7 mb-4 font-extrabold pl-4">
+              <div className="grid grid-cols-7 pl-4 mb-4 font-extrabold">
                 <p>Name</p>
                 <p>Description</p>
                 <p>Date</p>
