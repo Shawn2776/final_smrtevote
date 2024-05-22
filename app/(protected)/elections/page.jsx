@@ -1,5 +1,7 @@
 import { getElectionById } from "@/actions/elections";
 import { Election } from "@/components/election";
+import Link from "next/link";
+
 import React from "react";
 
 const ElectionPage = async ({ params }) => {
@@ -9,7 +11,14 @@ const ElectionPage = async ({ params }) => {
     return <div>Election not found</div>;
   }
 
-  return <Election election={election} />;
+  return (
+    <div className="grid w-full h-full grid-cols-12">
+      <div className="flex flex-col items-center col-span-1 bg-white">
+        <Link href={`/elections/${params.id}`}>Overview</Link>
+      </div>
+      <div className="col-span-10">etst</div>
+    </div>
+  );
 };
 
 export default ElectionPage;

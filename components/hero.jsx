@@ -11,9 +11,8 @@ const Hero = () => {
             <span className="text-sky-300">Vote</span>
           </h1>
           <p className="mt-6 mb-8 text-lg text-white sm:mb-12">
-            Secure, cloud-based voting platform
-            <br className="hidden text-white md:inline lg:hidden" />
-            for education, business and individuals.
+            Secure, cloud-based voting platform for education, business and
+            individuals.
           </p>
           <div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
             <div className="flex flex-col">

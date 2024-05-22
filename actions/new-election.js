@@ -39,5 +39,5 @@ export const newElection = async (values) => {
     },
   });
 
-  return { success: "Election created!" };
+  return { election, success: "Election created!" };
 };

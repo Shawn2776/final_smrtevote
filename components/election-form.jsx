@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-
+import { useRouter } from "next/navigation";
 const NewElectionForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -56,9 +56,17 @@ const NewElectionForm = () => {
       newElection(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
+
+        console.log(data);
+
+        if (data.success) {
+          router.push(`/elections/${data.election.id}/overview`);
+        }
       });
     });
   };
+
+  const router = useRouter();
 
   return (
     <CardWrapper
