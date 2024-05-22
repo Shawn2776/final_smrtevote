@@ -24,7 +24,7 @@ const Hero = () => {
               >
                 Get Started
               </a>
-              <p className="text-sm text-white">*Free for up to 5 voters</p>
+              <p className="text-sm text-white">*Free for up to 25 voters</p>
             </div>
           </div>
         </div>
