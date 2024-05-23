@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -12,8 +14,24 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { FaEye } from "react-icons/fa";
 import { Button } from "./ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { deleteElectionById } from "@/actions/elections";
+import { useRouter } from "next/navigation";
 
 const ElectionsList = ({ elections }) => {
+  const router = useRouter();
+
+  const onClickDelete = async (electionId) => {
+    if (confirm("Are you sure you want to delete this election?")) {
+      const response = await deleteElectionById(electionId);
+      if (response.error) {
+        alert(response.error);
+      } else {
+        alert(response.success);
+      }
+    }
+
+    router.push("/dashboard");
+  };
   return (
     <>
       {/* MOBILE */}
@@ -33,7 +51,7 @@ const ElectionsList = ({ elections }) => {
                   index % 2 === 0 ? "bg-gray-300" : ""
                 }`}
               >
-                <div className="flex flex-col w-4/6 ">
+                <div className="flex flex-col w-4/6">
                   <p>{election.name}</p>
                   <span className="text-xs text-gray-700">
                     {election.description}
@@ -41,7 +59,7 @@ const ElectionsList = ({ elections }) => {
                 </div>
 
                 <div className="w-1/6">
-                  <p className="flex justify-start w-full ">
+                  <p className="flex justify-start w-full">
                     <span
                       className={`w-full text-xs flex justify-center px-2 py-1 border shadow-md rounded ${
                         election.status === "PENDING"
@@ -57,29 +75,29 @@ const ElectionsList = ({ elections }) => {
                 </div>
 
                 <div className="flex justify-center w-1/6">
-                  <p>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger>
-                        <BiDotsHorizontalRounded className="w-6 h-6" />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-32" align="end">
-                        <Link
-                          href={`/elections/${election.id}`}
-                          variant="ghost"
-                          className="w-full"
-                        >
-                          <DropdownMenuItem className="flex items-center gap-4">
-                            <FaEye className="w-4 h-4 mr-2" />
-                            View
-                          </DropdownMenuItem>
-                        </Link>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <BiDotsHorizontalRounded className="w-6 h-6" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-32" align="end">
+                      <Link
+                        href={`/elections/${election.id}`}
+                        variant="ghost"
+                        className="w-full"
+                      >
                         <DropdownMenuItem className="flex items-center gap-4">
-                          <DeleteIcon className="w-4 h-4 mr-2" />
-                          Delete
+                          <FaEye className="w-4 h-4 mr-2" />
+                          View
                         </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </p>
+                      </Link>
+                      <DropdownMenuItem className="flex items-center gap-4">
+                        <DeleteIcon className="w-4 h-4 mr-2" />
+                        <button onClick={() => onClickDelete(election.id)}>
+                          Delete
+                        </button>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             </li>
@@ -103,20 +121,19 @@ const ElectionsList = ({ elections }) => {
               </div>
             </li>
             {elections.map((election, index) => (
-              <li key={election.id} className="">
+              <li key={election.id}>
                 <Link
                   href={`/elections/${election.id}/overview`}
                   className={`grid grid-cols-10 pt-2 pb-2 pl-2 text-sm gap-6 items-center hover:bg-slate-900 hover:text-white hover:cursor-pointer ${
                     index % 2 === 0 ? "bg-gray-300" : ""
                   }`}
                 >
-                  {" "}
-                  <p className="col-span-2 ">{election.name}</p>
-                  <p className="col-span-2 ">{election.description}</p>
-                  <p className="col-span-1 ">{election.electionDate}</p>
-                  <p className="w-full col-span-1 mx-auto text-center ">
+                  <p className="col-span-2">{election.name}</p>
+                  <p className="col-span-2">{election.description}</p>
+                  <p className="col-span-1">{election.electionDate}</p>
+                  <p className="w-full col-span-1 mx-auto text-center">
                     <span
-                      className={`w-[100%] px-2 py-1 col-span-1 border shadow-md shadow-black border-black ${
+                      className={`w-full px-2 py-1 col-span-1 border shadow-md shadow-black border-black ${
                         election.status === "PENDING"
                           ? "bg-orange-400 text-black"
                           : election.status === "OPEN"
@@ -130,23 +147,20 @@ const ElectionsList = ({ elections }) => {
                   <p className="col-span-1 text-center capitalize">
                     {election.electionType}
                   </p>
-                  <p className="col-span-2 ">{election.candidates}</p>
+                  <p className="col-span-2">{election.candidates}</p>
                   <Button variant="link" className="hover:text-white">
                     <DropdownMenu>
                       <DropdownMenuTrigger>
                         <DotsHorizontalIcon className="w-6 h-6" />
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        className="w-40 hover:cursor-pointer"
-                        align="end"
-                      >
+                      <DropdownMenuContent className="w-40" align="end">
                         <Link
                           href="/new-election"
                           variant="ghost"
                           className="w-full"
                         >
-                          <DropdownMenuItem className="flex items-center gap-4 hover:cursor-pointer">
-                            <TbListDetails className="w-4 h-4 mr-2 " />
+                          <DropdownMenuItem className="flex items-center gap-4">
+                            <TbListDetails className="w-4 h-4 mr-2" />
                             Details
                           </DropdownMenuItem>
                         </Link>
@@ -155,21 +169,17 @@ const ElectionsList = ({ elections }) => {
                           variant="ghost"
                           className="w-full"
                         >
-                          <DropdownMenuItem className="flex items-center gap-4 hover:cursor-pointer">
-                            <Edit2Icon className="w-4 h-4 mr-2 " />
+                          <DropdownMenuItem className="flex items-center gap-4">
+                            <Edit2Icon className="w-4 h-4 mr-2" />
                             Edit
                           </DropdownMenuItem>
                         </Link>
-                        <Link
-                          href="/settings"
-                          variant="ghost"
-                          className="w-full"
-                        >
-                          <DropdownMenuItem className="flex items-center gap-4 hover:cursor-pointer">
-                            <Trash2Icon className="w-4 h-4 mr-2 " />
+                        <DropdownMenuItem className="flex items-center gap-4">
+                          <Trash2Icon className="w-4 h-4 mr-2" />
+                          <button onClick={() => onClickDelete(election.id)}>
                             Delete
-                          </DropdownMenuItem>
-                        </Link>
+                          </button>
+                        </DropdownMenuItem>
                         <hr className="my-2" />
                       </DropdownMenuContent>
                     </DropdownMenu>

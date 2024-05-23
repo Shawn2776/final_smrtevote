@@ -9,7 +9,11 @@ const ElectionLayout = async ({ children, params }) => {
 
   const exisitingElection = await getElectionById(electionId);
 
-  if (exisitingElection.userId !== user.id) {
+  // if (!exisitingElection?.electionId) {
+  //   return <div>Election not found</div>;
+  // }
+
+  if (exisitingElection?.userId !== user.id) {
     return <div>Election not found</div>;
   }
 
