@@ -18,7 +18,7 @@ const ElectionLayout = async ({ children, params }) => {
       <div className="flex flex-col items-center w-full h-screen col-span-1 text-white">
         <Sidebar electionId={electionId} />
       </div>
-      <div className="col-span-11 pt-10">{children}</div>
+      <div className="col-span-11 p-2 pl-10">{children}</div>
     </div>
   );
 };

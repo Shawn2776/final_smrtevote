@@ -124,7 +124,7 @@ const ElectionsList = ({ elections }) => {
                   <p>
                     <Button asChild variant="outline">
                       <Link
-                        href={`/elections/${election.id}`}
+                        href={`/elections/${election.id}/overview`}
                         variant="outline"
                         className="w-full"
                       >
