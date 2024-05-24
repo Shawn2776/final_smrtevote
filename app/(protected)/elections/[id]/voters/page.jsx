@@ -26,8 +26,12 @@ const VotersPage = async ({ params }) => {
             <Button>...</Button>
           </div>
         </div>
-        {election.voters.length === 0 ? (
-          <div className="flex justify-center w-full"></div>
+        {console.log(election.voters.length)}
+        {election.voters.length < 1 ? (
+          <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
+            <hr className="w-full mx-auto mb-4" />
+            <Button>Add Voter</Button>
+          </div>
         ) : (
           election.voters.map((voter) => (
             <div

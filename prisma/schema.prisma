@@ -55,8 +55,8 @@ model Election {
 model Voter {
   id         String   @id @default(cuid())
   name       String
-  email      String
-  voterId    String
+  email      String  @unique
+  voterId    String @unique
   voterKey   String
   electionId String
   hasVoted  DateTime?
