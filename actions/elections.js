@@ -49,6 +49,9 @@ export const getElectionById = async (electionId) => {
     where: {
       id: electionId,
     },
+    include: {
+      voters: true,
+    },
   });
 
   return election;
