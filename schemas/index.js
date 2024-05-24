@@ -32,3 +32,10 @@ export const NewElectionSchema = z.object({
   electionType: z.enum(electionTypes),
   candidates: z.optional(z.array(z.string())),
 });
+
+export const NewVoterSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  email: z.string().email({ message: "Email is required" }),
+  voterId: z.string().min(1, { message: "Voter ID is required" }),
+  voterKey: z.string().min(1, { message: "Voter Key is required" }),
+});

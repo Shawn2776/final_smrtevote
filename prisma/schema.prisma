@@ -48,20 +48,19 @@ model Election {
   electionDate String
   electionType String
   candidates   Candidate[]
-  voters      Voter[]
   user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  voters       Voter[]
 }
 
 model Voter {
-  id         String   @id @default(cuid())
-  name       String
-  email      String  @unique
-  voterId    String @unique
-  voterKey   String
+  id         String    @id @default(cuid())
+  email      String
   electionId String
-  hasVoted  DateTime?
-  election   Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
-
+  name       String
+  voterId    String
+  voterKey   String
+  hasVoted   DateTime?
+  election   Election  @relation(fields: [electionId], references: [id], onDelete: Cascade)
 }
 
 model Candidate {
