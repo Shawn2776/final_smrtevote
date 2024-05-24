@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { getElectionsByUserId } from "@/actions/elections";
-import ElectionsList from "@/components/election-list";
+import { ElectionList } from "@/components/election-list";
 
 const DashboardPage = async () => {
   const session = await auth();
@@ -11,7 +11,7 @@ const DashboardPage = async () => {
 
   const elections = await getElectionsByUserId(session.user.id);
 
-  return <ElectionsList elections={elections} />;
+  return <ElectionList elections={elections} />;
 };
 
 export default DashboardPage;

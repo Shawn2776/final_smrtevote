@@ -16,7 +16,7 @@ import { DeleteIcon, Edit2Icon, Trash2Icon } from "lucide-react";
 import { FaEye } from "react-icons/fa";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 
-export const ElectionList = ({ elections }) => {
+export const ElectionsList2 = ({ elections }) => {
   const router = useRouter();
 
   const onClickDelete = async (electionId) => {
