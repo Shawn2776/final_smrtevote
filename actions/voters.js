@@ -2,8 +2,15 @@
 
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { NewVoterSchema } from "@/schemas";
 
 export const addVoterToElection = async (electionId, values) => {
+  const validatedFields = NewVoterSchema.safeParse(values);
+
+  if (!validatedFields.success) {
+    return { error: "Invalid fields" };
+  }
+
   const { user } = await auth();
 
   if (!user) {
@@ -38,5 +45,5 @@ export const addVoterToElection = async (electionId, values) => {
     },
   });
 
-  return voter;
+  return { success: "Voter added successfully", electionId };
 };

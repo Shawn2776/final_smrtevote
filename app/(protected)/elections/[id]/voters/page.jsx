@@ -1,7 +1,7 @@
 import { getElectionById } from "@/actions/elections";
 import { ElectionHeader } from "@/components/election/election-header";
 import { Button } from "@/components/ui/button";
-import { VoterList } from "@/components/voer-list";
+import { VoterList } from "@/components/voter-list";
 import React from "react";
 
 const VotersPage = async ({ params }) => {

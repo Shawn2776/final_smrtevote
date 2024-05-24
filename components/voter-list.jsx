@@ -15,7 +15,9 @@ export const VoterList = ({ election }) => {
           <div className="flex gap-2">
             <Button>Import</Button>
             <Button>
-              <Link href="/">Add Voter</Link>
+              <Link href={`/elections/${election.id}/voters/voter`}>
+                Add Voter
+              </Link>
             </Button>
             <Button>...</Button>
           </div>

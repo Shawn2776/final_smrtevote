@@ -33,7 +33,8 @@ import {
 } from "./ui/select";
 import { useRouter } from "next/navigation";
 import { addVoterToElection } from "@/actions/voters";
-const VoterForm = (electionId) => {
+
+const VoterForm = ({ electionId }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -54,14 +55,14 @@ const VoterForm = (electionId) => {
       setError("");
       setSuccess("");
 
+      console.log(electionId);
+
       addVoterToElection(electionId, values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
 
-        console.log(data);
-
         if (data.success) {
-          router.push(`/elections/${data.election.id}/voters`);
+          router.push(`/elections/${data.electionId}/voters`);
         }
       });
     });
@@ -72,8 +73,8 @@ const VoterForm = (electionId) => {
   return (
     <CardWrapper
       headerLabel={"New Voter"}
-      backButtonLabel={"Back to Voter List"}
-      backButtonHref={`/elections/${electionId}/voters`}
+      backButtonLabel={"Back to Dashboard"}
+      backButtonHref={`/dashboard`}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -169,7 +170,7 @@ const VoterForm = (electionId) => {
             type="submit"
             className="w-full shadow-md shadow-gray-500"
           >
-            Create New Election
+            Add Voter
           </Button>
         </form>
       </Form>

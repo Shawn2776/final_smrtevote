@@ -54,13 +54,15 @@ model Election {
 
 model Voter {
   id         String    @id @default(cuid())
-  email      String
+  email      String   @unique
   electionId String
   name       String
-  voterId    String
+  voterId    String   @unique
   voterKey   String
   hasVoted   DateTime?
   election   Election  @relation(fields: [electionId], references: [id], onDelete: Cascade)
+
+  @@unique([email, electionId])
 }
 
 model Candidate {
