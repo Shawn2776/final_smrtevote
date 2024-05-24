@@ -22,7 +22,7 @@ const ElectionLayout = async ({ children, params }) => {
       <div className="flex flex-col items-center flex-1 w-full h-screen text-white lg:col-span-1">
         <Sidebar electionId={electionId} />
       </div>
-      <div className="flex flex-2 lg:p-2 lg:col-span-11 lg:pl-10">
+      <div className="flex flex-2 lg:p-2 lg:col-span-11 lg:pl-2">
         {children}
       </div>
     </div>
