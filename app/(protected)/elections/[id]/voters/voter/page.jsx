@@ -3,7 +3,11 @@ import React from "react";
 
 const AddVotersPage = ({ params }) => {
   const electionId = params.id;
-  return <VoterForm electionId={electionId} />;
+  return (
+    <div className="flex justify-center w-full">
+      <VoterForm electionId={electionId} />
+    </div>
+  );
 };
 
 export default AddVotersPage;
