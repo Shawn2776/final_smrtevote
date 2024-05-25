@@ -39,3 +39,10 @@ export const NewVoterSchema = z.object({
   voterId: z.string().min(1, { message: "Voter ID is required" }),
   voterKey: z.string().min(1, { message: "Voter Key is required" }),
 });
+
+export const NewBallotSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  email: z.string().email({ message: "Email is required" }),
+  ballotId: z.string().min(1, { message: "Ballot ID is required" }),
+  ballotKey: z.string().min(1, { message: "Ballot Key is required" }),
+});
