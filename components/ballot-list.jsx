@@ -1,12 +1,10 @@
 "use client";
 
-import { addVoterToElection } from "@/actions/voters";
 import { ElectionHeader } from "./election/election-header";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
 export const BallotList = ({ election }) => {
-  console.log(election);
   return (
     <div className="flex flex-col w-full">
       <ElectionHeader election={election} />
@@ -26,7 +24,7 @@ export const BallotList = ({ election }) => {
         {election.ballots?.length < 1 ? (
           <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
             <hr className="w-full mx-auto mb-4" />
-            <Button>New Ballot</Button>
+            <Button>Create Ballot</Button>
           </div>
         ) : (
           election.ballots?.map((ballot) => (

@@ -72,20 +72,28 @@ model Candidate {
   name        String
   description String
   electionId  String
-  ballots     Ballot[]
   election    Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  ballots     BallotCandidate[]
 }
 
 model Ballot {
   id          String   @id @default(cuid())
   electionId  String
   voterId     String
-  candidateId String
   election    Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
   voter       Voter    @relation(fields: [voterId], references: [id], onDelete: Cascade)
-  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidates  BallotCandidate[]
 
   @@unique([voterId, electionId])
+}
+
+model BallotCandidate {
+  ballotId    String
+  candidateId String
+  ballot      Ballot    @relation(fields: [ballotId], references: [id], onDelete: Cascade)
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@id([ballotId, candidateId])
 }
 
 model VerificationToken {
