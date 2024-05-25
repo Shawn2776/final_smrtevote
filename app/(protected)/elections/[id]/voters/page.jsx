@@ -1,6 +1,4 @@
 import { getElectionById } from "@/actions/elections";
-import { ElectionHeader } from "@/components/election/election-header";
-import { Button } from "@/components/ui/button";
 import { VoterList } from "@/components/voter-list";
 import React from "react";
 
@@ -13,7 +11,11 @@ const VotersPage = async ({ params }) => {
     return <div>404</div>;
   }
 
-  return <VoterList election={election} />;
+  return (
+    <div className="flex flex-col w-full h-full">
+      <VoterList election={election} />
+    </div>
+  );
 };
 
 export default VotersPage;

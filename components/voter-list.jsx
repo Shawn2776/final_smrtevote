@@ -4,6 +4,7 @@ import { addVoterToElection } from "@/actions/voters";
 import { ElectionHeader } from "./election/election-header";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { SearchInput } from "./search-input";
 
 export const VoterList = ({ election }) => {
   return (
