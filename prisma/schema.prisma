@@ -48,6 +48,7 @@ model Election {
   electionDate String
   electionType String
   candidates   Candidate[]
+  ballots      Ballot[]
   user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   voters       Voter[]
 }
@@ -60,6 +61,7 @@ model Voter {
   voterId    String    @unique
   voterKey   String
   hasVoted   DateTime?
+  ballots     Ballot[]
   election   Election  @relation(fields: [electionId], references: [id], onDelete: Cascade)
 
   @@unique([email, electionId])
@@ -70,7 +72,20 @@ model Candidate {
   name        String
   description String
   electionId  String
+  ballots     Ballot[]
   election    Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+}
+
+model Ballot {
+  id          String   @id @default(cuid())
+  electionId  String
+  voterId     String
+  candidateId String
+  election    Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  voter       Voter    @relation(fields: [voterId], references: [id], onDelete: Cascade)
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@unique([voterId, electionId])
 }
 
 model VerificationToken {

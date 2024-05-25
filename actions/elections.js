@@ -51,6 +51,8 @@ export const getElectionById = async (electionId) => {
     },
     include: {
       voters: true,
+      candidates: true,
+      ballots: true,
     },
   });
 
