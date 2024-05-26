@@ -57,8 +57,6 @@ const NewElectionForm = () => {
         setError(data.error);
         setSuccess(data.success);
 
-        console.log(data);
-
         if (data.success) {
           router.push(`/elections/${data.election.id}/overview`);
         }

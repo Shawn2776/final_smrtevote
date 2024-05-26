@@ -4,7 +4,9 @@ import { ElectionHeader } from "./election/election-header";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
-export const BallotList = ({ election }) => {
+export const BallotList = ({ election, ballot }) => {
+  console.log(ballot);
+
   return (
     <div className="flex flex-col w-full">
       <ElectionHeader election={election} />
@@ -21,24 +23,47 @@ export const BallotList = ({ election }) => {
             <Button>...</Button>
           </div>
         </div>
-        {election.ballots?.length < 1 ? (
+        {election.electionType === "election" &&
+        ballot.candidates.length === 0 ? (
           <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
             <hr className="w-full mx-auto mb-4" />
-            <Button>Create Ballot</Button>
+            <Button>Add Candidate</Button>
           </div>
         ) : (
-          election.ballots?.map((ballot) => (
+          election.electionType === "election" &&
+          ballot.candidates.map((candidate) => (
             <div
-              key={ballot.id}
+              key={candidate.id}
               className="grid w-full grid-cols-5 p-4 mt-2 bg-white rounded-lg shadow-md justify-evenly"
             >
-              <p className="col-span-1 text-xl font-bold">{ballot.name}</p>
-              {/* <p className="col-span-1">{ballot.email}</p>
-              <p className="col-span-1">{ballot.ballotId}</p>
-              <p className="col-span-1">{ballot.ballotKey}</p>
+              <p className="col-span-1 text-xl font-bold">{candidate.name}</p>
+              <p className="col-span-1">{candidate.email}</p>
+              <p className="col-span-1">{candidate.candidateId}</p>
+              <p className="col-span-1">{candidate.candidateKey}</p>
               <p className="col-span-1">
-                {ballot.hasVoted ? "Has Voted" : "Has Not Voted"}
-              </p> */}
+                {candidate.hasVoted ? "Has Voted" : "Has Not Voted"}
+              </p>
+            </div>
+          ))
+        )}
+        {election.electionType === "poll" && ballot.questions.length === 0 ? (
+          <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
+            <hr className="w-full mx-auto mb-4" />
+            <Button>Add Question</Button>
+          </div>
+        ) : (
+          ballot.questions.map((question) => (
+            <div
+              key={question.id}
+              className="grid w-full grid-cols-5 p-4 mt-2 bg-white rounded-lg shadow-md justify-evenly"
+            >
+              <p className="col-span-1 text-xl font-bold">{question.name}</p>
+              <p className="col-span-1">{question.email}</p>
+              <p className="col-span-1">{question.questionId}</p>
+              <p className="col-span-1">{question.questionKey}</p>
+              <p className="col-span-1">
+                {question.hasVoted ? "Has Voted" : "Has Not Voted"}
+              </p>
             </div>
           ))
         )}
@@ -46,3 +71,18 @@ export const BallotList = ({ election }) => {
     </div>
   );
 };
+
+// election.ballots?.map((ballot) => (
+//   <div
+//     key={ballot.id}
+//     className="grid w-full grid-cols-5 p-4 mt-2 bg-white rounded-lg shadow-md justify-evenly"
+//   >
+//     <p className="col-span-1 text-xl font-bold">{ballot.name}</p>
+//     {/* <p className="col-span-1">{ballot.email}</p>
+//     <p className="col-span-1">{ballot.ballotId}</p>
+//     <p className="col-span-1">{ballot.ballotKey}</p>
+//     <p className="col-span-1">
+//       {ballot.hasVoted ? "Has Voted" : "Has Not Voted"}
+//     </p> */}
+//   </div>
+// ))

@@ -55,8 +55,6 @@ const VoterForm = ({ electionId }) => {
       setError("");
       setSuccess("");
 
-      console.log(electionId);
-
       addVoterToElection(electionId, values).then((data) => {
         setError(data.error);
         setSuccess(data.success);

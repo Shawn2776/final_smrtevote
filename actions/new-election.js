@@ -30,14 +30,27 @@ export const newElection = async (values) => {
     data: {
       name,
       description,
+      userId: user.id,
       electionDate,
       electionType,
-      candidates: {
-        create: candidates, // Correctly handling candidates as a nested create
-      },
-      userId: user.id,
     },
   });
+
+  const ballot = await db.ballot.create({
+    data: {
+      electionId: election.id,
+    },
+  });
+
+  await db.election.update({
+    where: {
+      id: election.id,
+    },
+    data: {
+      ballotId: ballot.id,
+    },
+  });
+
 
   return { election, success: "Election created!" };
 };

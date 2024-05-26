@@ -19,9 +19,7 @@ const {
   SelectItem,
 } = require("./ui/select");
 
-const updateElection = async (data) => {
-  console.log(data);
-};
+const updateElection = async (data) => {};
 
 export const ElectionUpdateForm = ({ election }) => {
   const form = useForm({
