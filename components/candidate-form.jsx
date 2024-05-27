@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import {
   Select,
   SelectContent,
@@ -30,10 +30,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { newCandidate } from "@/actions/ballots";
+import CardWrapperFull from "./auth/card-wrapper-full";
+import { Textarea } from "./ui/textarea";
 
 const NewCandidateForm = () => {
+  const searchParams = useSearchParams();
+  const ballotId = searchParams.get("ballotId");
+
+  useEffect(() => {
+    if (!ballotId) {
+      console.error("No election ID provided!");
+    }
+  }, [ballotId]);
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -69,47 +80,68 @@ const NewCandidateForm = () => {
   const router = useRouter();
 
   return (
-    <CardWrapper
-      headerLabel={"New Question"}
+    <CardWrapperFull
+      headerLabel={"New Candidate"}
       backButtonLabel={"Back to Dashboard"}
-      backButtonHref={"/elections"}
+      backButtonHref={`/dashboard`}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
-            <FormField
-              disabled={isPending}
-              control={form.control}
-              name="question"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Question</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Enter a Question..."
-                      type="text"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="flex gap-4">
+            <input type="image" src="https://placehold.co/300x300" />
+            <div className="w-full space-y-4 flex-flex-col">
+              <FormField
+                disabled={isPending}
+                control={form.control}
+                name="question"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Candidate's Name"
+                        type="text"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              disabled={isPending}
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                disabled={isPending}
+                control={form.control}
+                name="position"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Position</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Candidate's Position" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                disabled={isPending}
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Enter Candidate's Description..."
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
@@ -122,7 +154,7 @@ const NewCandidateForm = () => {
           </Button>
         </form>
       </Form>
-    </CardWrapper>
+    </CardWrapperFull>
   );
 };
 

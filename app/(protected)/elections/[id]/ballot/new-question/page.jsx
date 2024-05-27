@@ -1,5 +1,6 @@
+"use client";
+
 import NewQuestionForm from "@/components/question-form";
-import React from "react";
 
 const BallotPage = () => {
   return (

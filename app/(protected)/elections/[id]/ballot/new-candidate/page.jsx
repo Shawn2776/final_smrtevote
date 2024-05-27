@@ -1,10 +1,9 @@
-import NewQuestionForm from "@/components/question-form";
-import React from "react";
+import NewCandidateForm from "@/components/candidate-form";
 
 const BallotPage = () => {
   return (
     <div className="flex items-center justify-center w-full h-full">
-      <NewQuestionForm />
+      <NewCandidateForm />
     </div>
   );
 };

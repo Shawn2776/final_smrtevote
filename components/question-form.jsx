@@ -79,7 +79,7 @@ const NewQuestionForm = () => {
     <CardWrapperFull
       headerLabel={"New Question"}
       backButtonLabel={"Back to Dashboard"}
-      backButtonHref={"/elections"}
+      backButtonHref={"/dashboard"}
     >
       <Form {...form}>
         <form
