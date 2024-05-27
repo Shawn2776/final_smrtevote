@@ -5,8 +5,8 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 
 export const BallotList = ({ election, ballot }) => {
-  console.log(ballot);
-
+  const inBallot = ballot;
+  console.log(inBallot.ballot.questions);
   return (
     <div className="flex flex-col w-full">
       <ElectionHeader election={election} />
@@ -46,27 +46,48 @@ export const BallotList = ({ election, ballot }) => {
             </div>
           ))
         )}
-        {election.electionType === "poll" && ballot.questions.length === 0 ? (
+        {election.electionType === "poll" &&
+        inBallot.ballot.questions.length === 0 ? (
           <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
             <hr className="w-full mx-auto mb-4" />
-            <Button>Add Question</Button>
+            <Button asChild>
+              <Link
+                href={`/elections/${election.id}/ballot/ballot?ballotId=${election.ballotId}`}
+              >
+                Add Question
+              </Link>
+            </Button>
           </div>
         ) : (
-          ballot.questions.map((question) => (
+          inBallot.ballot.questions.map((question) => (
             <div
               key={question.id}
               className="grid w-full grid-cols-5 p-4 mt-2 bg-white rounded-lg shadow-md justify-evenly"
             >
-              <p className="col-span-1 text-xl font-bold">{question.name}</p>
-              <p className="col-span-1">{question.email}</p>
-              <p className="col-span-1">{question.questionId}</p>
-              <p className="col-span-1">{question.questionKey}</p>
-              <p className="col-span-1">
-                {question.hasVoted ? "Has Voted" : "Has Not Voted"}
+              <p className="col-span-1 text-xl font-bold">
+                {question.question}
+              </p>
+              <p className="col-span-1">{question.option1}</p>
+              <p className="col-span-1">{question.option2}</p>
+              <p className={question.option3 ? "col-span-1" : "hidden"}>
+                {question.option3 || null}
+              </p>
+              <p className={question.option4 ? "col-span-1" : "hidden"}>
+                {question.option4 || null}
               </p>
             </div>
           ))
         )}
+        <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
+          <hr className="w-full mx-auto mb-4" />
+          <Button asChild>
+            <Link
+              href={`/elections/${election.id}/ballot/ballot?ballotId=${election.ballotId}`}
+            >
+              Add Question
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   );

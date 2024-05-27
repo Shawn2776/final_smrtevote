@@ -87,6 +87,10 @@ model Candidate {
 model Question {
   id         String   @id @default(cuid())
   question   String
+  option1    String
+  option2    String
+  option3    String?
+  option4    String?
   ballotId   String
   ballot     Ballot   @relation(fields: [ballotId], references: [id], onDelete: Cascade)
 }

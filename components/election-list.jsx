@@ -81,7 +81,7 @@ export const ElectionList = ({ elections }) => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-32" align="end">
                       <Link
-                        href={`/elections/${election.id}`}
+                        href={`/elections/${election.id}/overview`}
                         variant="ghost"
                         className="w-full"
                       >
