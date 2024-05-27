@@ -24,14 +24,14 @@ export const BallotList = ({ election, ballot }) => {
           </div>
         </div>
         {election.electionType === "election" &&
-        ballot.candidates.length === 0 ? (
+        inBallot?.candidates?.length === 0 ? (
           <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
             <hr className="w-full mx-auto mb-4" />
             <Button>Add Candidate</Button>
           </div>
         ) : (
           election.electionType === "election" &&
-          ballot.candidates.map((candidate) => (
+          inBallot?.candidates?.map((candidate) => (
             <div
               key={candidate.id}
               className="grid w-full grid-cols-5 p-4 mt-2 bg-white rounded-lg shadow-md justify-evenly"
@@ -78,16 +78,29 @@ export const BallotList = ({ election, ballot }) => {
             </div>
           ))
         )}
-        <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
-          <hr className="w-full mx-auto mb-4" />
-          <Button asChild>
-            <Link
-              href={`/elections/${election.id}/ballot/ballot?ballotId=${election.ballotId}`}
-            >
-              Add Question
-            </Link>
-          </Button>
-        </div>
+        {election.electionType === "poll" ? (
+          <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
+            <hr className="w-full mx-auto mb-4" />
+            <Button asChild>
+              <Link
+                href={`/elections/${election.id}/ballot/new-question?ballotId=${election.ballotId}`}
+              >
+                Add Question
+              </Link>
+            </Button>
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
+            <hr className="w-full mx-auto mb-4" />
+            <Button asChild>
+              <Link
+                href={`/elections/${election.id}/ballot/new-candidate?ballotId=${election.ballotId}`}
+              >
+                Add Candidate
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

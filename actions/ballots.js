@@ -186,3 +186,71 @@ export const newQuestion = async (ballotId, values) => {
     return { error: "An error occurred while creating the question." };
   }
 };
+
+export const newCandidate = async (ballotId, values) => {
+  const validatedFields = NewQuestionSchema.safeParse(values);
+
+  if (!validatedFields.success) {
+    console.error("Validation errors:", validatedFields.error.errors);
+    return { error: "Invalid fields!" };
+  }
+
+  const { user } = await auth();
+
+  try {
+    const existingBallot = await db.ballot.findUnique({
+      where: {
+        id: ballotId,
+      },
+    });
+
+    if (!existingBallot) {
+      return { error: "Ballot does not exist!" };
+    }
+
+    const existingElection = await db.election.findUnique({
+      where: {
+        id: existingBallot.electionId,
+      },
+    });
+
+    if (!existingElection) {
+      return { error: "Election does not exist!" };
+    }
+
+    if (existingElection.userId !== user.id) {
+      return { error: "Unauthorized" };
+    }
+
+    if (existingBallot.electionId !== existingElection.id) {
+      return { error: "Ballot does not belong to this election!" };
+    }
+
+    if (existingElection.electionType !== "poll") {
+      return { error: "Invalid election type!" };
+    }
+
+    const { question, option1, option2, option3, option4 } =
+      validatedFields.data;
+
+    const newQuestion = await db.question.create({
+      data: {
+        ballotId,
+        question,
+        option1,
+        option2,
+        option3,
+        option4,
+      },
+    });
+
+    return {
+      success: "Question added!",
+      question: newQuestion,
+      election: existingElection,
+    };
+  } catch (error) {
+    console.error("Error in newQuestion:", error);
+    return { error: "An error occurred while creating the question." };
+  }
+};

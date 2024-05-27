@@ -80,6 +80,10 @@ model Voter {
 model Candidate {
   id         String   @id @default(cuid())
   name       String
+  position   String?
+  image      String?
+  notes      String?  @db.Text
+  resume     String?
   ballotId   String
   ballot     Ballot   @relation(fields: [ballotId], references: [id], onDelete: Cascade)
 }
