@@ -82,7 +82,7 @@ model Candidate {
   name       String
   position   String?
   image      String?
-  notes      String?  @db.Text
+  notes      String?
   resume     String?
   ballotId   String
   ballot     Ballot   @relation(fields: [ballotId], references: [id], onDelete: Cascade)

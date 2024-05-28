@@ -61,11 +61,8 @@ export const NewQuestionSchema = z.object({
 });
 
 export const NewCandidateSchema = z.object({
-  name: z.string().nonempty("Name is required"),
-  position: z.optional(
-    z.string().max(65535, { message: "Max length is 65,535 characters." })
-  ),
-  image: z.optional(z.string()),
-  notes: z.optional(z.string()),
-  resume: z.optional(z.string()),
+  name: z.string().nonempty("Question is required"),
+  position: z.string(),
+  notes: z.string(),
 });
+

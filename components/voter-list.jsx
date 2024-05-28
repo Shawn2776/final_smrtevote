@@ -25,7 +25,11 @@ export const VoterList = ({ election }) => {
         {election.voters.length < 1 ? (
           <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
             <hr className="w-full mx-auto mb-4" />
-            <Button>Add Voter</Button>
+            <Button>
+              <Link href={`/elections/${election.id}/voters/voter`}>
+                Add Voter
+              </Link>
+            </Button>
           </div>
         ) : (
           election.voters.map((voter) => (

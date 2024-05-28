@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { NewQuestionSchema } from "@/schemas";
+import { NewCandidateSchema, NewQuestionSchema } from "@/schemas";
 
 export const addBallotToElection = async (electionId, ballot) => {
   const { user } = await auth();
@@ -188,7 +188,7 @@ export const newQuestion = async (ballotId, values) => {
 };
 
 export const newCandidate = async (ballotId, values) => {
-  const validatedFields = NewQuestionSchema.safeParse(values);
+  const validatedFields = NewCandidateSchema.safeParse(values);
 
   if (!validatedFields.success) {
     console.error("Validation errors:", validatedFields.error.errors);
@@ -226,31 +226,30 @@ export const newCandidate = async (ballotId, values) => {
       return { error: "Ballot does not belong to this election!" };
     }
 
-    if (existingElection.electionType !== "poll") {
+    if (existingElection.electionType !== "election") {
       return { error: "Invalid election type!" };
     }
 
-    const { question, option1, option2, option3, option4 } =
-      validatedFields.data;
+    const { name, notes, position } = validatedFields.data;
 
-    const newQuestion = await db.question.create({
+    const newCandidate = await db.candidate.create({
       data: {
         ballotId,
-        question,
-        option1,
-        option2,
-        option3,
-        option4,
+        name,
+        notes,
+        position,
       },
     });
 
     return {
-      success: "Question added!",
-      question: newQuestion,
+      success: "Candidate added!",
+      candidate: newCandidate,
       election: existingElection,
     };
   } catch (error) {
-    console.error("Error in newQuestion:", error);
-    return { error: "An error occurred while creating the question." };
+    console.error("Error in newCandidate:", error);
+    return { error: "An error occurred while creating the candidate." };
   }
 };
+
+

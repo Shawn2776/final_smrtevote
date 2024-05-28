@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export const BallotList = ({ election, ballot }) => {
   const inBallot = ballot;
-  console.log(inBallot.ballot.questions);
+  console.log("ELECTIONTYPE: ", election.electionType);
   return (
     <div className="flex flex-col w-full">
       <ElectionHeader election={election} />
@@ -24,25 +24,20 @@ export const BallotList = ({ election, ballot }) => {
           </div>
         </div>
         {election.electionType === "election" &&
-        inBallot?.candidates?.length === 0 ? (
+        inBallot?.ballot?.candidates?.length === 0 ? (
           <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">
             <hr className="w-full mx-auto mb-4" />
             <Button>Add Candidate</Button>
           </div>
         ) : (
-          election.electionType === "election" &&
-          inBallot?.candidates?.map((candidate) => (
+          inBallot?.ballot?.candidates.map((candidate) => (
             <div
               key={candidate.id}
-              className="grid w-full grid-cols-5 p-4 mt-2 bg-white rounded-lg shadow-md justify-evenly"
+              className="grid w-full grid-cols-4 p-4 mt-2 bg-white rounded-lg shadow-md justify-evenly"
             >
               <p className="col-span-1 text-xl font-bold">{candidate.name}</p>
-              <p className="col-span-1">{candidate.email}</p>
-              <p className="col-span-1">{candidate.candidateId}</p>
-              <p className="col-span-1">{candidate.candidateKey}</p>
-              <p className="col-span-1">
-                {candidate.hasVoted ? "Has Voted" : "Has Not Voted"}
-              </p>
+              <p className="col-span-1">{candidate.position}</p>
+              <p className="col-span-1">{candidate.notes}</p>
             </div>
           ))
         )}

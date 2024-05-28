@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { useRouter } from "next/navigation";
+
 const NewElectionForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
