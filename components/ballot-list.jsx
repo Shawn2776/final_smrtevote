@@ -1,6 +1,8 @@
 "use client";
 
 import { ElectionHeader } from "./election/election-header";
+import CandidateTable from "./tables/candidate-table";
+import QuestionTable from "./tables/question-table";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
@@ -30,16 +32,9 @@ export const BallotList = ({ election, ballot }) => {
             <Button>Add Candidate</Button>
           </div>
         ) : (
-          inBallot?.ballot?.candidates.map((candidate) => (
-            <div
-              key={candidate.id}
-              className="grid w-full grid-cols-4 p-4 mt-2 bg-white rounded-lg shadow-md justify-evenly"
-            >
-              <p className="col-span-1 text-xl font-bold">{candidate.name}</p>
-              <p className="col-span-1">{candidate.position}</p>
-              <p className="col-span-1">{candidate.notes}</p>
-            </div>
-          ))
+          election.electionType === "election" && (
+            <CandidateTable candidates={inBallot.ballot.candidates} />
+          )
         )}
         {election.electionType === "poll" &&
         inBallot.ballot.questions.length === 0 ? (
@@ -54,24 +49,9 @@ export const BallotList = ({ election, ballot }) => {
             </Button>
           </div>
         ) : (
-          inBallot.ballot.questions.map((question) => (
-            <div
-              key={question.id}
-              className="grid w-full grid-cols-5 p-4 mt-2 bg-white rounded-lg shadow-md justify-evenly"
-            >
-              <p className="col-span-1 text-xl font-bold">
-                {question.question}
-              </p>
-              <p className="col-span-1">{question.option1}</p>
-              <p className="col-span-1">{question.option2}</p>
-              <p className={question.option3 ? "col-span-1" : "hidden"}>
-                {question.option3 || null}
-              </p>
-              <p className={question.option4 ? "col-span-1" : "hidden"}>
-                {question.option4 || null}
-              </p>
-            </div>
-          ))
+          election.electionType === "poll" && (
+            <QuestionTable questions={inBallot.ballot.questions} />
+          )
         )}
         {election.electionType === "poll" ? (
           <div className="flex flex-col justify-center w-full p-4 mx-auto mt-2">

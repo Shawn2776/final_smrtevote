@@ -69,7 +69,7 @@ model Voter {
   id         String         @id @default(cuid())
   email      String         @unique
   electionId String
-  name       String
+  name       String         @unique
   voterId    String         @unique
   voterKey   String
   hasVoted   DateTime?
