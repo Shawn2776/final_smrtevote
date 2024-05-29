@@ -12,6 +12,9 @@ export const getElectionsByUserId = async (userId) => {
     where: {
       userId,
     },
+    include: {
+      ballot: true,
+    },
   });
 
   return elections;
