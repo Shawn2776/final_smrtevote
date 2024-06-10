@@ -2,7 +2,6 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { FaRegCircleXmark } from "react-icons/fa6";
 
 const ElectionTable = ({ elections }) => {
-  console.log(elections);
   return (
     <section className="relative py-4 bg-blueGray-50">
       <div className="w-full px-4 mb-12">
